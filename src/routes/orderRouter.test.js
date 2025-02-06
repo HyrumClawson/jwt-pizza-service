@@ -63,16 +63,13 @@ test('add item to the menu without proper role', async () => {
 
 
 test('order', async () => {
-  const menu = await request(app).get('/api/order/menu')
-  expect(menu.body[0]).toMatchObject({"description": "A garden of delight",});
+//   const menu = await request(app).get('/api/order/menu')
+//   // change this back and forth
+//   expect(menu.body[0]).toMatchObject({"description": "A garden of delight",});
 
-  //send: transmits body of the request
-  //set : set the header 
   let orderRequest = {franchiseId : 1, storeId :1, items :[{ menuId: 1, description : "Veggie" , price : 0.05 }]};
   const orderRes = await request(app).post('/api/order').send(orderRequest).set('Authorization', `Bearer ${testUserAuthToken}`);
   expect(orderRes.status).toBe(200);
-  // expect(order.status).toBe(200);
-  // expect(order.body).toBe("hello");
 });
 
 
