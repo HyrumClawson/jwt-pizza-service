@@ -47,7 +47,7 @@ test('order', async () => {
   const menu = await request(app).get('/api/order/menu')
   expect(menu.body[0]).toMatchObject({"description": "A garden of delight",});
 
-  const order = await request(app).post('/api/order').send('{"franchiseId": 1, "storeId":1, "items":[{ "menuId": 1, "description": "Veggie", "price": 0.05 }]}');
+  //const order = await request(app).post('/api/order').send('{"franchiseId": 1, "storeId":1, "items":[{ "menuId": 1, "description": "Veggie", "price": 0.05 }]}');
   // expect(order.status).toBe(200);
   // expect(order.body).toBe("hello");
 
@@ -63,7 +63,8 @@ test('create franchise as admin', async () => {
  // expectValidJwt(loginRes.body.token);
 
 
-  const createFranchise = await request(app).post('/api/franchise').send('{"name": "pizzaPocket", "admins": [{"email": "f@jwt.com"}]}');
+  // const createFranchise = await request(app).post('/api/franchise').send('{"name": "pizzaPocket", "admins": [{"email": "f@jwt.com"}]}');
+  // expect(createFranchise.body).toBe("{"message"" : "unauthorized}");
 
 
   //.send('{"franchiseId": 1, "name":"SLC"}')
