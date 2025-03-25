@@ -100,7 +100,7 @@ orderRouter.post(
       method: 'POST',
       path: factoryUrl,
       statusCode: r.status,
-      resBody: logger.sanitize(JSON.stringify(j)),  
+      resBody: logger.sanitize(j),  
       level: r.ok ? 'info' : 'error',  
       type: 'factory_service',  
       component: 'jwt-pizza-service'
