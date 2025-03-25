@@ -73,6 +73,7 @@ function track(endpoint) {
         const originalSend = res.send;
         res.send = function (body) {
             if(status === 200){
+                console.log(body)
                 const numberOfItems = body.order.items.length;
                 const totalCost = body.order.items.reduce((total, item) => total + item.price, 0);
                 //totalCost = Math.floor(totalCost);
