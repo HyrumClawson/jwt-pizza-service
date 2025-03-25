@@ -92,7 +92,7 @@ orderRouter.post(
     } else {
       res.status(500).send({ message: 'Failed to fulfill order at factory', reportPizzaCreationErrorToPizzaFactoryUrl: j.reportUrl });
     }
-
+    console.log("the following is j");
     console.log(j);
     // this is sending the logger a log based on what the fetch request returns
     const factoryResponseLogData = {
@@ -105,6 +105,7 @@ orderRouter.post(
       type: 'factory_service',  
       component: 'jwt-pizza-service'
     };
+    console.log("the following is j after")
     console.log(j)
     logger.log(factoryResponseLogData);
   })

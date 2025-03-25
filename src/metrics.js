@@ -74,7 +74,13 @@ function track(endpoint) {
         res.send = function (body) {
             if(status === 200){
                 console.log(body);
-                const numberOfItems = body.order.items.length;
+                try{
+                    const numberOfItems = body.order.items.length;
+                }
+                catch(error){
+                    console.error("body at error time:", body);
+                }
+                
                 const totalCost = body.order.items.reduce((total, item) => total + item.price, 0);
                 //totalCost = Math.floor(totalCost);
                 console.log("totalCost: ", totalCost);
@@ -88,6 +94,10 @@ function track(endpoint) {
             else{
                 failed_orders += 1;
             }
+            //the following are two lines I"ve added let's see if this works... 
+            res.send = originalSend;
+            return res.send(body);
+
         }
         res.on('finish', () => {
             pizzaLatency = Date.now() - startTime;
