@@ -3,6 +3,7 @@ const config = require('../config.js');
 const { Role, DB } = require('../database/database.js');
 const { authRouter } = require('./authRouter.js');
 const { asyncHandler, StatusCodeError } = require('../endpointHelper.js');
+const logger = require('../logger.js')
 
 const orderRouter = express.Router();
 
@@ -76,6 +77,7 @@ orderRouter.get(
 orderRouter.post(
   '/',
   authRouter.authenticateToken,
+  //put the code here for factory service requests 
   asyncHandler(async (req, res) => {
     const orderReq = req.body;
     const order = await DB.addDinerOrder(req.user, orderReq);
@@ -90,6 +92,19 @@ orderRouter.post(
     } else {
       res.status(500).send({ message: 'Failed to fulfill order at factory', reportPizzaCreationErrorToPizzaFactoryUrl: j.reportUrl });
     }
+
+    // this is sending the logger a log based on what the fetch request returns
+    const factoryResponseLogData = {
+      timestamp: new Date().toISOString(),
+      method: 'POST',
+      path: factoryUrl,
+      statusCode: r.status,
+      resBody: logger.sanitize(JSON.stringify(j)),  
+      level: r.ok ? 'info' : 'error',  
+      type: 'factory_service',  
+      component: 'jwt-pizza-service'
+    };
+    logger.log(factoryResponseLogData);
   })
 );
 

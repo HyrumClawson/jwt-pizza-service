@@ -1,5 +1,6 @@
 const express = require('express');
 const metrics = require('./metrics.js'); // my gosh I don't understand how this works 
+const logger = require('./logger.js')
 
 const { authRouter, setAuthUser } = require('./routes/authRouter.js');
 const orderRouter = require('./routes/orderRouter.js');
@@ -11,6 +12,7 @@ const config = require('./config.js');
 const app = express();
 app.use(express.json());
 app.use(setAuthUser);
+app.use(logger.httpLogger);
 app.use(metrics.track('total endpoints')); // hopefully this is a good place to put this
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');

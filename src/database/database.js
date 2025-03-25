@@ -4,6 +4,7 @@ const config = require('../config.js');
 const { StatusCodeError } = require('../endpointHelper.js');
 const { Role } = require('../model/model.js');
 const dbModel = require('./dbModel.js');
+const logger = require('../logger.js')
 class DB {
   constructor() {
     this.initialized = this.initializeDatabase();
@@ -285,8 +286,45 @@ class DB {
   }
 
   async query(connection, sql, params) {
-    const [results] = await connection.execute(sql, params);
-    return results;
+    // this is where I need to add the logging code for getting the database requests
+    const startTime = Date.now(); // Track when the query starts.
+  
+    try {
+      // Log the SQL query execution attempt with parameters.
+      logger.log('info', 'db', {
+        sql: sql,
+        params: params,
+        message: 'Executing query',
+      });
+
+      const [results] = await connection.execute(sql, params);
+      const duration = Date.now() - startTime;
+
+      logger.log('info', 'db', {
+        sql: sql,
+        params: params,
+        duration: `${duration}ms`,
+        message: 'Query successful',
+        results: results, // Optionally log the results (be careful not to log too much data)
+      });
+
+      return results;
+    }
+    catch(error){
+      const duration = Date.now() - startTime; // Calculate query execution time even if it failed.
+
+    // Log the error and query information.
+      logger.log('error', 'db', {
+        sql: sql,
+        params: params,
+        duration: `${duration}ms`,
+        error: error.message,
+        message: 'Query failed',
+      });
+      //I dont' know if throwing the error here will mess stuff up so 
+      //for now I'll just have it in case
+      //throw error;
+    }
   }
 
   async getID(connection, key, value, table) {
