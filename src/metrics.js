@@ -71,16 +71,14 @@ function track(endpoint) {
     // the stuff to get the number of pizza's ordered and the revenue per minute/ failed orders
     if(endpoint === "order" && method === "POST"){
         const originalSend = res.send;
+        //what the frick just happened? None of the console logs are printing now
+        //console.log("this is the res.send body: ", res.send(body));
         res.send = function (body) {
             if(status === 200){
-                console.log(body);
-                try{
-                    const numberOfItems = body.order.items.length;
-                }
-                catch(error){
-                    console.error("body at error time:", body);
-                }
-                
+                console.log(body.order);
+                const numberOfItems = body.order.items.length;
+
+                    // console.error("body at error time:", body);
                 const totalCost = body.order.items.reduce((total, item) => total + item.price, 0);
                 //totalCost = Math.floor(totalCost);
                 console.log("totalCost: ", totalCost);
@@ -88,15 +86,15 @@ function track(endpoint) {
                 // Send order cost to Grafana
                 revenue += totalCost;
                 totalItems += numberOfItems;
-
-
             }
             else{
                 failed_orders += 1;
             }
             //the following are two lines I"ve added let's see if this works... 
-            res.send = originalSend;
-            return res.send(body);
+            // res.send = originalSend;
+            // console.log("this is the res.send(body)");
+            // console.log(res.send(body));
+            // return res.send(body);
 
         }
         res.on('finish', () => {
@@ -109,10 +107,6 @@ function track(endpoint) {
         endpointLatency = Date.now() - startTime; // Calculate latency in ms
     });
   
-
-
-    
-
     //const key = `${endpoint}:${method}`;
     //come back and change this if you need more information
     requests[method] = (requests[method] || 0) + 1;

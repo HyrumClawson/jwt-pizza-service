@@ -3,7 +3,8 @@ const config = require('../config.js');
 const { Role, DB } = require('../database/database.js');
 const { authRouter } = require('./authRouter.js');
 const { asyncHandler, StatusCodeError } = require('../endpointHelper.js');
-const logger = require('../logger.js')
+const Logger = require('../logger.js');
+const logger = new Logger(config);
 
 const orderRouter = express.Router();
 
@@ -81,6 +82,7 @@ orderRouter.post(
   asyncHandler(async (req, res) => {
     const orderReq = req.body;
     const order = await DB.addDinerOrder(req.user, orderReq);
+    let body = { diner: { id: req.user.id, name: req.user.name, email: req.user.email }, order };
     const r = await fetch(`${config.factory.url}/api/order`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', authorization: `Bearer ${config.factory.apiKey}` },
@@ -92,22 +94,30 @@ orderRouter.post(
     } else {
       res.status(500).send({ message: 'Failed to fulfill order at factory', reportPizzaCreationErrorToPizzaFactoryUrl: j.reportUrl });
     }
-    console.log("the following is j");
-    console.log(j);
+
+        // might neeed to change to get the actual body 
+    // console.log(r.body);
+    //added for logging. 
+    logger.factoryLogger(body);
+    //logger.factoryLogger(orderInfo);
+
+
+    // console.log("the following is j");
+    // console.log(j);
     // this is sending the logger a log based on what the fetch request returns
-    const factoryResponseLogData = {
-      timestamp: new Date().toISOString(),
-      method: 'POST',
-      path: factoryUrl,
-      statusCode: r.status,
-      resBody: logger.sanitize(j),  
-      level: r.ok ? 'info' : 'error',  
-      type: 'factory_service',  
-      component: 'jwt-pizza-service'
-    };
-    console.log("the following is j after")
-    console.log(j)
-    logger.log(factoryResponseLogData);
+    // const factoryResponseLogData = {
+    //   timestamp: new Date().toISOString(),
+    //   method: 'POST',
+    //   path: factoryUrl,
+    //   statusCode: r.status,
+    //   resBody: logger.sanitize(j),  
+    //   level: r.ok ? 'info' : 'error',  
+    //   type: 'factory_service',  
+    //   component: 'jwt-pizza-service'
+    // };
+    // console.log("the following is j after");
+    // console.log(j);
+    // logger.log(factoryResponseLogData);
   })
 );
 
