@@ -219,7 +219,7 @@ function sendMetricToGrafana(metricName, metricValue, attributes) {
         console.error('Failed to push metrics data to Grafana');
         console.log(`this is the metric ${metricName}`)
       } else {
-        console.log(`Pushed ${metricName}`);
+        //console.log(`Pushed ${metricName}`);
       }
     })
     .catch((error) => {
