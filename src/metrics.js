@@ -223,7 +223,7 @@ function sendMetricToGrafana(metricName, metricValue, attributes) {
       }
     })
     .catch((error) => {
-      console.error('Error pushing metrics:', error);
+      //console.error('Error pushing metrics:', error);
     });
 }
 
@@ -273,14 +273,14 @@ function sendMetricToGrafanaCost(metricName, metricValue, attributes) {
     })
       .then((response) => {
         if (!response.ok) {
-          console.error('Failed to push metrics data to Grafana');
-          console.log(`this is the metric ${metricName}`)
+          //console.error('Failed to push metrics data to Grafana');
+          //console.log(`this is the metric ${metricName}`)
         } else {
-          console.log(`Pushed ${metricName}`);
+          //console.log(`Pushed ${metricName}`);
         }
       })
       .catch((error) => {
-        console.error('Error pushing metrics:', error);
+        //console.error('Error pushing metrics:', error);
       });
   }
 
