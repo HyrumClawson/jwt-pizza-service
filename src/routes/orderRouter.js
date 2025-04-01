@@ -98,7 +98,9 @@ orderRouter.post(
         // might neeed to change to get the actual body 
     // console.log(r.body);
     //added for logging. 
-    logger.factoryLogger(body);
+
+    
+    //logger.factoryLogger(body);
     //logger.factoryLogger(orderInfo);
 
 
