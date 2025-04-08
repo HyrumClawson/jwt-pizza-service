@@ -1,5 +1,4 @@
 const config = require('./config');
-
 class Logger {
     constructor(config) {
       this.config = config;
