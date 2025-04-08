@@ -99,9 +99,8 @@ orderRouter.post(
     // console.log(r.body);
     //added for logging. 
 
-    
-    //logger.factoryLogger(body);
-    //logger.factoryLogger(orderInfo);
+    logger.factoryLogger(body);
+    logger.factoryLogger(orderInfo);
 
 
     // console.log("the following is j");
@@ -122,6 +121,9 @@ orderRouter.post(
     // logger.log(factoryResponseLogData);
   })
 );
+
+
+
 let enableChaos = false;
 orderRouter.put(
   '/chaos/:state',
