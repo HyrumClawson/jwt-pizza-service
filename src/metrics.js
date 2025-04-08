@@ -90,15 +90,16 @@ function track(endpoint) {
             else{
                 failed_orders += 1;
             }
+            return originalSend.call(this, body);
             //the following are two lines I"ve added let's see if this works... 
             // res.send = originalSend;
             // console.log("this is the res.send(body)");
             // console.log(res.send(body));
             // return res.send(body);
-
-        }
+        };
         res.on('finish', () => {
             pizzaLatency = Date.now() - startTime;
+            console.log("Pizza Latency: ", pizzaLatency)
         });
 
     }
