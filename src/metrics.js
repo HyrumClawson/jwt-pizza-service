@@ -146,8 +146,9 @@ const timer = setInterval(() => {
 
   });
     // Send CPU usage metrics
+    //changing it so it gets sent as a double
     const cpuUsage = getCpuUsagePercentage();
-    sendMetricToGrafana('cpu_usage', cpuUsage, { source: config.metrics.source });
+    sendMetricToGrafanaCost('cpu_usage', cpuUsage, { source: config.metrics.source });
 
     // Send memory usage metrics
     const memoryUsage = getMemoryUsagePercentage();
