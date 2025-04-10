@@ -75,6 +75,7 @@ function track(endpoint) {
         //console.log("this is the res.send body: ", res.send(body));
         res.send = function (body) {
             if(status === 200){
+                console.log(body)
                 console.log(body.order);
                 const numberOfItems = body.order.items.length;
 
