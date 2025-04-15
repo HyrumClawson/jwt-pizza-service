@@ -60,6 +60,8 @@ class DB {
   async getUser(email, password) {
     const connection = await this.getConnection();
     try {
+      //look through all these endpoints again. Not going to find it here
+      //directly inserting the one that doesn't have a question mark. 
       const userResult = await this.query(connection, `SELECT * FROM user WHERE email=?`, [email]);
       const user = userResult[0];
       if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -78,6 +80,11 @@ class DB {
   }
 
   async updateUser(userId, email, password) {
+    //I think I found it... it would appear that I can inject some 
+    //sql code stuff here 
+    // use the isinteger(userId) cause it will always be an integer and thus evaluate
+    //to true. 
+    // hint: cannot execute multiple sql statements in one line. 
     const connection = await this.getConnection();
     try {
       const params = [];
@@ -86,6 +93,7 @@ class DB {
         params.push(`password='${hashedPassword}'`);
       }
       if (email) {
+        //do it in the email 
         params.push(`email='${email}'`);
       }
       if (params.length > 0) {
@@ -203,6 +211,7 @@ class DB {
   }
 
   async getFranchises(authUser) {
+    //could exploit the first sql query since there's no ? parameterizing the query
     const connection = await this.getConnection();
     try {
       const franchises = await this.query(connection, `SELECT id, name FROM franchise`);
